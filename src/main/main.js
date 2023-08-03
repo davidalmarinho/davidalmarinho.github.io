@@ -1,5 +1,6 @@
 import { Player } from "../entities/Player.js";
 import { KeyListener } from "../utils/KeyListener.js";
+import { World } from "../world/World.js"
 
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
@@ -80,6 +81,7 @@ function gameLoop(currentTime) {
 function main() {
   let player = new Player(0, 0, 16, 16);
   entitiesList.push(player);
+  let world = new World("assets/levels/map.png", 20, 20);
   
   gameLoop(window.performance.now());
 }
