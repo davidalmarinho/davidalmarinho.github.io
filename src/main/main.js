@@ -5,11 +5,29 @@ const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
 console.log(ctx);
 
-const CANVAS_WIDTH = canvas.width = 600;
+const CANVAS_WIDTH = canvas.width   = 800;
 const CANVAS_HEIGHT = canvas.height = 600;
-
 var entitiesList = [];
 var keyListener = new KeyListener();
+
+window.onload = function() {
+  prepareDocument();
+  resizeCanvas();
+}
+
+window.onresize = function() {
+  resizeCanvas();
+}
+
+function resizeCanvas() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function prepareDocument() {
+  document.body.style.padding = "0px";
+  document.body.style.margin = "0px";
+}
 
 function tick(keyListener) {
   for (let i = 0; i < entitiesList.length; i++) {
@@ -36,6 +54,7 @@ function draw() {
 let lastTime = window.performance.now();
 let accumulatorFPS = 0.0;
 let fps = 0;
+const MAX_FPS = 30;
 
 function gameLoop(currentTime) {
   let delta = currentTime - lastTime;
@@ -45,7 +64,7 @@ function gameLoop(currentTime) {
   tick(keyListener);
   draw();
 
-  fps += 1;
+  fps++;
   
   if (accumulatorFPS > 1000) { // 1000ms <=> 1 second.
     console.log("FPS: " + fps + "\n");
@@ -53,7 +72,9 @@ function gameLoop(currentTime) {
     accumulatorFPS = 0.0;
   }
   
-  requestAnimationFrame(gameLoop);
+  setTimeout(() => {
+    requestAnimationFrame(gameLoop);
+  }, 1000 / MAX_FPS);
 };
 
 function main() {

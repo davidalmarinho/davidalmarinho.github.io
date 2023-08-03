@@ -16,4 +16,8 @@ export class KeyListener {
       }
     });
   }
+
+  isKeyPressed(key) {
+    return this.keys.indexOf(key) > -1;
+  }
 }

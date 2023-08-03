@@ -14,11 +14,19 @@ export class Player extends Entity {
 
   tick(keyListener) {
     // Move player.
-    if (keyListener.keys.indexOf('ArrowRight') > -1 || keyListener.keys.indexOf('d') > -1) {
-      this.x++;
+    const SPEED = 5;
+    if (keyListener.isKeyPressed('ArrowRight') || keyListener.isKeyPressed('d')) {
+      this.x += SPEED;
     }
-    else if (keyListener.keys.indexOf('ArrowLeft') > -1 || keyListener.keys.indexOf('a') > -1) {
-      this.x--;
+    else if (keyListener.isKeyPressed('ArrowLeft') || keyListener.isKeyPressed('a')) {
+      this.x -= SPEED;
+    }
+
+    if (keyListener.isKeyPressed('ArrowUp') || keyListener.isKeyPressed('w')) {
+      this.y -= SPEED;
+    }
+    else if (keyListener.isKeyPressed('ArrowDown') || keyListener.isKeyPressed('s')) {
+      this.y += SPEED;
     }
 
     // Player animation.
@@ -42,11 +50,12 @@ export class Player extends Entity {
   }
 
   draw(ctx) {
+    const canvas = document.getElementById('canvas1');
     ctx.drawImage(AssetPool.playerSpritesheet.image, 
-      this.frameX * Constants.SPRITE_SIZE, this.frameY * Constants.SPRITE_SIZE, 
+      this.frameX * Constants.SPRITE_SIZE, this.frameY, 
       Constants.SPRITE_SIZE, Constants.SPRITE_SIZE, 
       this.x, this.y,
-      Constants.SPRITE_SIZE * Constants.SPRITE_SCALE, Constants.SPRITE_SIZE * Constants.SPRITE_SCALE, 
+      canvas.width * Constants.SPRITE_WIDTH_RENDER, canvas.height * Constants.SPRITE_HEIGHT_RENDER, 
       0, 0
     );
   }
