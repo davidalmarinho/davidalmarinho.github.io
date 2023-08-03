@@ -1,4 +1,5 @@
-import { Spritesheet } from "../rendering/Spritesheet.js";
+import { Player } from "../entities/Player.js";
+import { KeyListener } from "../utils/KeyListener.js";
 
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
@@ -7,16 +8,14 @@ console.log(ctx);
 const CANVAS_WIDTH = canvas.width = 600;
 const CANVAS_HEIGHT = canvas.height = 600;
 
-const spriteWidth = 256;
-const spriteHeight = 256;
-let frameX = 0;
-let frameY = 0;
+var entitiesList = [];
+var keyListener = new KeyListener();
 
-var playerSpritesheet = new Spritesheet("assets/textures/player.png", 256, 256);
-
-function tick() {
-
-};
+function tick(keyListener) {
+  for (let i = 0; i < entitiesList.length; i++) {
+    entitiesList[i].tick(keyListener);
+  }
+}
 
 function animate() {
   // Clear all the paint
@@ -24,10 +23,9 @@ function animate() {
 
   ctx.fillRect(100, 50, 100, 100);
 
-  ctx.drawImage(playerSpritesheet.image,
-    frameX * spriteWidth, frameY * spriteHeight, 
-    spriteWidth, spriteHeight, 0, 0,
-    spriteWidth, spriteHeight, 0, 0);
+  for (let i = 0; i < entitiesList.length; i++) {
+    entitiesList[i].draw(ctx);
+  }
 };
 
 function draw() {
@@ -44,7 +42,7 @@ function gameLoop(currentTime) {
   accumulatorFPS += delta;
   lastTime = currentTime;
 
-  tick();
+  tick(keyListener);
   draw();
 
   fps += 1;
@@ -58,5 +56,12 @@ function gameLoop(currentTime) {
   requestAnimationFrame(gameLoop);
 };
 
+function main() {
+  let player = new Player(0, 0, 16, 16);
+  entitiesList.push(player);
+  
+  gameLoop(window.performance.now());
+}
+
 // Main
-gameLoop(window.performance.now());
+main();
