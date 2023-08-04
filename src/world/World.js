@@ -1,4 +1,10 @@
+import { Constants } from "../utils/Constants.js";
+import { BlockableTile } from "./BlockableTile.js";
+import { Floor } from "./Floor.js"
+
 export class World {
+  static tilesList = [];
+
   constructor(filename, width, height) {
     this.map     = new Image();
     this.map.src = filename;
@@ -21,22 +27,35 @@ export class World {
     const data = imgData.data;
 
     // Depending of pixel's color, we gonna place a Tile.
-    for (let i = 0; i < data.length; i += 4) {
-      const red   = data[i];
-      const green = data[i + 1];
-      const blue  = data[i + 2];
-      const alpha = data[i + 3];
+    let pixelIndex = 0;
+    for (let xx = 0; xx < this.width; xx ++) {
+      for (let yy = 0; yy < this.height; yy ++) {
+        const red   = data[pixelIndex];
+        const green = data[pixelIndex + 1];
+        const blue  = data[pixelIndex + 2];
+        const alpha = data[pixelIndex + 3];
 
-      const CURRENT_PIXEL = alpha * 256 * 256 * 256 + red * 256 * 256 + green * 256 + blue;
-      switch (CURRENT_PIXEL) {
-        case 0xFFffffff:
-          // Place floor.
-          // console.log("White has been found!");
-          break;
-        case 0xFF000000:
-          // console.log("Black has been found");
-          break;
+        const CURRENT_PIXEL = alpha * 256 * 256 * 256 + red * 256 * 256 + green * 256 + blue;
+        if (CURRENT_PIXEL == 0xFF000000) {
+          let floor = new Floor(xx * Constants.SPRITE_SIZE * Constants.SCALE,
+                                yy * Constants.SPRITE_SIZE * Constants.SCALE, 
+                                0, 0);
+          World.tilesList.push(floor);
+        }
+        else if (CURRENT_PIXEL == 0xFFffffff) {
+          let wall = new BlockableTile(xx * Constants.SPRITE_SIZE * Constants.SCALE, 
+                                       yy * Constants.SPRITE_SIZE * Constants.SCALE, 
+                                       1, 0);
+          World.tilesList.push(wall);
+        }
+        pixelIndex += 4;
       }
+    }
+  }
+
+  draw(context) {
+    for (let i = 0; i < World.tilesList.length; i++) {
+      World.tilesList[i].draw(context);
     }
   }
 }

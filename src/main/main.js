@@ -10,13 +10,10 @@ const CANVAS_WIDTH = canvas.width   = 800;
 const CANVAS_HEIGHT = canvas.height = 600;
 var entitiesList = [];
 var keyListener = new KeyListener();
+var world = new World("assets/levels/map.png", 20, 20);
 
 window.onload = function() {
   prepareDocument();
-  resizeCanvas();
-}
-
-window.onresize = function() {
   resizeCanvas();
 }
 
@@ -36,21 +33,16 @@ function tick(keyListener) {
   }
 }
 
-function animate() {
+function draw() {
   // Clear all the paint
-  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillRect(100, 50, 100, 100);
+  world.draw(ctx);
 
   for (let i = 0; i < entitiesList.length; i++) {
     entitiesList[i].draw(ctx);
   }
 };
-
-function draw() {
-  animate();
-};
-
 
 let lastTime = window.performance.now();
 let accumulatorFPS = 0.0;
@@ -81,7 +73,6 @@ function gameLoop(currentTime) {
 function main() {
   let player = new Player(0, 0, 16, 16);
   entitiesList.push(player);
-  let world = new World("assets/levels/map.png", 20, 20);
   
   gameLoop(window.performance.now());
 }

@@ -50,12 +50,13 @@ export class Player extends Entity {
   }
 
   draw(ctx) {
-    const canvas = document.getElementById('canvas1');
     ctx.drawImage(AssetPool.playerSpritesheet.image, 
-      this.frameX * Constants.SPRITE_SIZE, this.frameY, 
+      this.frameX * Constants.SPRITE_SIZE, this.frameY * Constants.SPRITE_SIZE, 
       Constants.SPRITE_SIZE, Constants.SPRITE_SIZE, 
-      this.x, this.y,
-      canvas.width * Constants.SPRITE_WIDTH_RENDER, canvas.height * Constants.SPRITE_HEIGHT_RENDER, 
+      this.x,
+      this.y,
+      Constants.SPRITE_SIZE * Constants.SCALE, 
+      Constants.SPRITE_SIZE * Constants.SCALE, 
       0, 0
     );
   }
