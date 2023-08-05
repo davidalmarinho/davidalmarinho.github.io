@@ -1,3 +1,6 @@
+import { GlobalVariables } from "../utils/GlobalVariables.js";
+import { Camera } from "../world/Camera.js";
+
 export class Entity {
   constructor(x, y, width, height) {
     this.x = x;
@@ -8,4 +11,20 @@ export class Entity {
 
   tick(keyListener) { }
   draw(context) { }
+
+  updateCamera() {
+    const canvas = document.getElementById('canvas1');
+    let w = GlobalVariables.GAME_WIDTH;
+    let h = GlobalVariables.GAME_HEIGHT;
+
+    const ENTITY_WIDTH = this.width * GlobalVariables.SCALE;
+    const ENTITY_HEIGHT = this.height * GlobalVariables.SCALE;
+
+    let x = this.x - Math.floor(w / 2) + Math.floor(ENTITY_WIDTH / 2);
+    let y = this.y - Math.floor(h / 2) + Math.floor(ENTITY_HEIGHT / 2);
+    Camera.x = Camera.clamp(x, 0,
+            20 * GlobalVariables.SCALE * GlobalVariables.SPRITE_SIZE - w);
+    Camera.y = Camera.clamp(y, 0,
+            20 * GlobalVariables.SCALE * GlobalVariables.SPRITE_SIZE - h);
+  }
 }

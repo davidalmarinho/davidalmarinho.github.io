@@ -1,13 +1,17 @@
 import { Player } from "../entities/Player.js";
+import { GlobalVariables } from "../utils/GlobalVariables.js";
 import { KeyListener } from "../utils/KeyListener.js";
 import { World } from "../world/World.js"
 
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
+ctx.mozImageSmoothingEnabled = false;
+ctx.msImageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = false;
 console.log(ctx);
 
-const CANVAS_WIDTH = canvas.width   = 800;
-const CANVAS_HEIGHT = canvas.height = 600;
+canvas.width  = GlobalVariables.GAME_WIDTH;
+canvas.height = GlobalVariables.GAME_HEIGHT;
 var entitiesList = [];
 var keyListener = new KeyListener();
 var world = new World("assets/levels/map.png", 20, 20);
@@ -15,11 +19,28 @@ var world = new World("assets/levels/map.png", 20, 20);
 window.onload = function() {
   prepareDocument();
   resizeCanvas();
+  ctx.mozImageSmoothingEnabled = false;
+  ctx.msImageSmoothingEnabled = false;
+  ctx.imageSmoothingEnabled = false;
 }
 
 function resizeCanvas() {
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight;
+  // TODO: Think in the best solution for this.
+  // canvas.width  = window.innerWidth;
+  // canvas.height = window.innerHeight;
+
+  /*GlobalVariables.GAME_WIDTH = window.innerWidth;
+  GlobalVariables.GAME_HEIGHT = window.innerHeight;
+
+  // Detects if the smartphone is in landscape orientation.
+  if (window.innerHeight < window.innerWidth) {
+    GlobalVariables.GAME_WIDTH = window.innerWidth;
+    GlobalVariables.GAME_HEIGHT = window.innerHeight;
+  }*/
+
+  // - - - - - - - - - - - - - - - - - - - - -
+  canvas.width  = GlobalVariables.GAME_WIDTH;
+  canvas.height = GlobalVariables.GAME_HEIGHT;
 }
 
 function prepareDocument() {
@@ -65,13 +86,14 @@ function gameLoop(currentTime) {
     accumulatorFPS = 0.0;
   }
   
-  setTimeout(() => {
+  //setTimeout(() => {
     requestAnimationFrame(gameLoop);
-  }, 1000 / MAX_FPS);
+  //}, 1000 / MAX_FPS);
 };
 
 function main() {
-  let player = new Player(0, 0, 16, 16);
+  // let player = new Player(1088, 1600, 16, 16);
+  let player = new Player(128, 128, GlobalVariables.SPRITE_SIZE, GlobalVariables.SPRITE_SIZE);
   entitiesList.push(player);
   
   gameLoop(window.performance.now());
