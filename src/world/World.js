@@ -40,7 +40,7 @@ export class World {
         if (CURRENT_PIXEL == 0xFF000000) {
           let floor = new Floor(xx * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
                                 yy * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
-                                0, 0);
+                                0, 1);
           World.tilesList.push(floor);
         }
         else if (CURRENT_PIXEL == 0xFFffffff) {
