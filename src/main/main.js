@@ -93,7 +93,7 @@ function gameLoop(currentTime) {
 
 function main() {
   // let player = new Player(1088, 1600, 16, 16);
-  let player = new Player(128, 128, GlobalVariables.SPRITE_SIZE, GlobalVariables.SPRITE_SIZE);
+  let player = new Player(128, 128, GlobalVariables.ENTITY_SIZE, GlobalVariables.ENTITY_SIZE);
   entitiesList.push(player);
   
   gameLoop(window.performance.now());

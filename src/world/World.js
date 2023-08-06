@@ -5,12 +5,14 @@ import { Camera } from "./Camera.js"
 
 export class World {
   static tilesList = [];
+  static width  = 0;
+  static height = 0;
 
   constructor(filename, width, height) {
     this.map     = new Image();
     this.map.src = filename;
-    this.width   = width;
-    this.height  = height;
+    World.width   = width;
+    World.height  = height;
 
     this.map.onload = () => {
       this.init();
@@ -20,8 +22,8 @@ export class World {
   init() {
     // Read image.
     const canvas = document.getElementById('canvas1');
-    canvas.width  = this.width;
-    canvas.height = this.height;
+    canvas.width  = World.width;
+    canvas.height = World.height;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(this.map, 0, 0);
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -29,8 +31,8 @@ export class World {
 
     // Depending of pixel's color, we gonna place a Tile.
     let pixelIndex = 0;
-    for (let yy = 0; yy < this.height; yy++) {
-      for (let xx = 0; xx < this.width; xx++) {
+    for (let yy = 0; yy < World.height; yy++) {
+      for (let xx = 0; xx < World.width; xx++) {
         const red   = data[pixelIndex];
         const green = data[pixelIndex + 1];
         const blue  = data[pixelIndex + 2];
@@ -69,24 +71,31 @@ export class World {
 
     for (let xx = xStart; xx <= xFinal; xx++) {
       for (let yy = yStart; yy <= yFinal; yy++) {
-        if (xx < 0 || xx > this.width || yy < 0 || yy > this.height)
+        if (xx < 0 || xx > World.width || yy < 0 || yy > World.height)
           continue;
         
-        var tile = World.tilesList[xx + yy * this.width];
+        var tile = World.tilesList[xx + yy * World.width];
         if (tile != null)
           tile.draw(context)
       }
     }
-
-    /*for (let xx = 0; xx < 20; xx++) {
-      for (let yy = 0; yy < 20; yy++) {
-        // if (xx < 0 || xx >= this.width || yy < 0 || yy >= this.height)
-        // continue;
-        
-        var tile = World.tilesList[xx + yy * this.width];
-        if (tile != null)
-          tile.draw(context)
-      }
-    }*/
   }
+
+  static isFree(xNext, yNext, speed, width, height) {
+    const X_START = Math.floor(xNext / GlobalVariables.TILE_SIZE);
+    const Y_START = Math.floor(yNext / GlobalVariables.TILE_SIZE);
+
+    const X_FINAL = Math.floor((xNext + width - speed) / GlobalVariables.TILE_SIZE);
+    const Y_FINAL = Math.floor((yNext + height - speed) / GlobalVariables.TILE_SIZE);
+
+    for (let x = X_START; x <= X_FINAL; x++) {
+      for (let y = Y_START; y <= Y_FINAL; y++) {
+        if (World.tilesList[x + y * World.width] instanceof BlockableTile) {
+          return false;
+        }
+      }
+    }
+
+  return true;
+}
 }

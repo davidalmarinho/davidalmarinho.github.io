@@ -2,6 +2,7 @@ import { AssetPool } from "../utils/AssetPool.js";
 import { Entity } from "../entities/Entity.js"
 import { GlobalVariables } from "../utils/GlobalVariables.js"
 import { Camera } from "../world/Camera.js";
+import { World } from "../world/World.js";
 
 export class Player extends Entity {
   fps = 0;
@@ -16,17 +17,26 @@ export class Player extends Entity {
   tick(keyListener) {
     // Move player.
     const SPEED = 5;
-    if (keyListener.isKeyPressed('ArrowRight') || keyListener.isKeyPressed('d')) {
+    const MOVE_RIGHT = (keyListener.isKeyPressed('ArrowRight') || keyListener.isKeyPressed('d')) && 
+                      World.isFree(this.x + SPEED, this.y, SPEED, this.width, this.height);
+    const MOVE_LEFT = (keyListener.isKeyPressed('ArrowLeft') || keyListener.isKeyPressed('a')) &&
+                      World.isFree(this.x - SPEED, this.y, SPEED, this.width, this.height);
+    const MOVE_UP = (keyListener.isKeyPressed('ArrowUp') || keyListener.isKeyPressed('w')) &&
+                    World.isFree(this.x, this.y - SPEED, SPEED, this.width, this.height);
+    const MOVE_DOWN = (keyListener.isKeyPressed('ArrowDown') || keyListener.isKeyPressed('s')) &&
+                      World.isFree(this.x, this.y + SPEED, SPEED, this.width, this.height);
+
+    if (MOVE_RIGHT) {
       this.x += SPEED;
     }
-    else if (keyListener.isKeyPressed('ArrowLeft') || keyListener.isKeyPressed('a')) {
+    else if (MOVE_LEFT) {
       this.x -= SPEED;
     }
     
-    if (keyListener.isKeyPressed('ArrowUp') || keyListener.isKeyPressed('w')) {
+    if (MOVE_UP) {
       this.y -= SPEED;
     }
-    else if (keyListener.isKeyPressed('ArrowDown') || keyListener.isKeyPressed('s')) {
+    else if (MOVE_DOWN) {
       this.y += SPEED;
     }
     
@@ -52,6 +62,7 @@ export class Player extends Entity {
   }
 
   draw(ctx) {
+    // ctx.drawImage(AssetPool.museumSpritesheet.image, 
     ctx.drawImage(AssetPool.playerSpritesheet.image, 
       this.frameX * GlobalVariables.SPRITE_SIZE, this.frameY * GlobalVariables.SPRITE_SIZE, 
       GlobalVariables.SPRITE_SIZE, GlobalVariables.SPRITE_SIZE, 
