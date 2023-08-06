@@ -1,8 +1,10 @@
 import { AssetPool } from "../utils/AssetPool.js";
-import { Entity } from "../entities/Entity.js"
-import { GlobalVariables } from "../utils/GlobalVariables.js"
+import { Entity } from "./Entity.js";
+import { GlobalVariables } from "../utils/GlobalVariables.js";
 import { Camera } from "../world/Camera.js";
 import { World } from "../world/World.js";
+import { Game } from "../main/Game.js";
+import { Signal } from "./Signal.js";
 
 export class Player extends Entity {
   fps = 0;
@@ -45,7 +47,22 @@ export class Player extends Entity {
       this.performIdleRight();
     }
     
+    this.checkCollision();
     this.updateCamera();
+  }
+
+  checkCollision() {
+    for (let i = 0; i < Game.entitiesList.length; i++) {
+      const CUR_ENT = Game.entitiesList[i];
+      if (CUR_ENT instanceof Player) {
+        continue;
+      }
+      else if (CUR_ENT instanceof Signal) {
+        if (this.isColliding(this, CUR_ENT)) {
+          console.log("Interacting...");
+        }
+      }
+    }
   }
 
   performIdleRight() {

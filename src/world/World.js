@@ -1,7 +1,10 @@
 import { GlobalVariables } from "../utils/GlobalVariables.js";
 import { BlockableTile } from "./BlockableTile.js";
-import { Floor } from "./Floor.js"
-import { Camera } from "./Camera.js"
+import { Floor } from "./Floor.js";
+import { Camera } from "./Camera.js";
+import { Signal } from "../entities/Signal.js";
+import { Entity } from "../entities/Entity.js";
+import { Game } from "../main/Game.js";
 
 export class World {
   static tilesList = [];
@@ -14,9 +17,8 @@ export class World {
     World.width   = width;
     World.height  = height;
 
-    this.map.onload = () => {
-      this.init();
-    }
+    // Set the world dimensions in the Entity class to avoid circular dependency.
+    Entity.setWorldDimensions(width, height);
   }
 
   init() {
@@ -50,6 +52,17 @@ export class World {
                                        yy * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
                                        1, 0);
           World.tilesList.push(wall);
+        }
+        else if (CURRENT_PIXEL == 0xFF836152) {
+          let floor = new Floor(xx * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
+            yy * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
+            0, 1);
+          World.tilesList.push(floor);
+
+          let signal = new Signal(xx * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
+                                  yy * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
+                                  GlobalVariables.ENTITY_SIZE, GlobalVariables.ENTITY_SIZE);
+          Game.entitiesList.push(signal);
         }
         pixelIndex += 4;
       }
