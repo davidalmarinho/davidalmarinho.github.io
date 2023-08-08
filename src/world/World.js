@@ -61,7 +61,8 @@ export class World {
 
           let signal = new Signal(xx * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
                                   yy * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
-                                  GlobalVariables.ENTITY_SIZE, GlobalVariables.ENTITY_SIZE);
+                                  GlobalVariables.ENTITY_SIZE, GlobalVariables.ENTITY_SIZE,
+                                  "Hello unknown traveller! How are you?\n What a pleasure to see\n you in such good health.\nDragons have been destroying all of our crops.\nCan you go ask them to stop?\nThank you!");
           Game.entitiesList.push(signal);
         }
         pixelIndex += 4;

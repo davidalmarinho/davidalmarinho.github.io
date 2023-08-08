@@ -14,6 +14,7 @@ export class Player extends Entity {
 
   constructor(x, y, width, height) {
     super(x, y, width, height);
+    this.showInteractingTip = false;
   }
 
   tick(keyListener) {
@@ -47,6 +48,7 @@ export class Player extends Entity {
       this.performIdleRight();
     }
     
+    this.showInteractingTip = false;
     this.checkCollision();
     this.updateCamera();
   }
@@ -59,7 +61,7 @@ export class Player extends Entity {
       }
       else if (CUR_ENT instanceof Signal) {
         if (this.isColliding(this, CUR_ENT)) {
-          console.log("Interacting...");
+          this.showInteractingTip = true;
         }
       }
     }
@@ -89,5 +91,13 @@ export class Player extends Entity {
       GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE, 
       0, 0
     );
+
+    if (this.showInteractingTip) {
+      ctx.font = "24px serif";
+      ctx.fillStyle = 'white';
+      ctx.fillText("Press 'E' to interact", 
+                   GlobalVariables.GAME_WIDTH - 240,
+                   GlobalVariables.GAME_HEIGHT - 20);
+    }
   }
 }
