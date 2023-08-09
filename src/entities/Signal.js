@@ -105,6 +105,9 @@ export class Signal extends Entity {
 
     if (!this.showMsg) { return; }
     
+    ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+    ctx.fillRect(0, 0, GlobalVariables.GAME_WIDTH, GlobalVariables.GAME_HEIGHT);
+
     // Render screen.
     const ADJUST_VALUE = 120;
     ctx.fillStyle = 'green';
