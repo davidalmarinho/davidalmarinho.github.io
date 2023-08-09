@@ -54,6 +54,7 @@ export class Signal extends Entity {
         }
         else {
           this.resetAnimText();
+          this.hideIFrameContainer();
         }
         break;
       }
@@ -104,9 +105,9 @@ export class Signal extends Entity {
 
     if (!this.showMsg) { return; }
     
-    // Render paper.
+    // Render screen.
     const ADJUST_VALUE = 120;
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'green';
     ctx.fillRect(ADJUST_VALUE, ADJUST_VALUE, 
       GlobalVariables.GAME_WIDTH - ADJUST_VALUE * 2, 
       GlobalVariables.GAME_HEIGHT - ADJUST_VALUE * 2);
@@ -126,5 +127,31 @@ export class Signal extends Entity {
         ctx.fillText(SUBSTRING_TEXT, ADJUST_VALUE * 2, ADJUST_VALUE * 2 + i * GlobalVariables.LINE_SPACING);
       }
     }
+
+    this.showIFrameContainer(140);
+  }
+
+  showIFrameContainer(pxMoveBellowCenter) {
+    // Get the iframe element.
+    const iframe = document.getElementById('iframeContainer');
+
+    // Unhide iframe
+    iframe.style.width = '420px';
+    iframe.style.height = '345px';
+    iframe.style.display = 'flex';
+
+    // Reposition of iframe a little bellow from the center.
+    var movement = pxMoveBellowCenter;
+    iframe.style.top = "calc(50% + " + movement + "px)";
+  }
+
+  hideIFrameContainer() {
+    // Get the iframe element.
+    const iframe = document.getElementById('iframeContainer');
+
+    // Hide iframe
+    iframe.style.width = '0px';
+    iframe.style.height = '0px';
+    iframe.style.display = 'none';
   }
 }

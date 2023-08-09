@@ -8,6 +8,10 @@ ctx.msImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 console.log(ctx);
 
+// TODO: Change iframe source depending of the needs.
+// const iframe = document.getElementById('iframe');
+// iframe.src = "https://www.youtube.com/embed/tgbNymZ7vqY?playlist=vRvU1g08oXo&loop=1&autoplay=1&mute=1";
+
 canvas.width  = GlobalVariables.GAME_WIDTH;
 canvas.height = GlobalVariables.GAME_HEIGHT;
 
