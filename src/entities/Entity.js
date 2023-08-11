@@ -11,6 +11,7 @@ export class Entity {
     this.y = y;
     this.width  = width;
     this.height = height;
+    this.zIndex = 0;
   }
 
   tick(keyListener) { }
@@ -49,4 +50,6 @@ export class Entity {
     Entity.worldWidth  = width;
     Entity.worldHeight = height;
   }
+
+  static entitySorter = (a, b) => a.zIndex - b.zIndex;
 }

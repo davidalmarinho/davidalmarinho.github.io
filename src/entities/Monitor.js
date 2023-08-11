@@ -5,7 +5,7 @@ import { Camera } from "../world/Camera.js";
 import { Game } from "../main/Game.js";
 import { Player } from "./Player.js";
 
-export class Signal extends Entity {
+export class Monitor extends Entity {
   constructor(x, y, width, height, text) {
     super(x, y, width, height);
     this.text = text;
@@ -14,6 +14,10 @@ export class Signal extends Entity {
     this.curTimeToAdvanceIndex = 1;
     this.paragraphs = [];
     this.curParagraph = 0;
+
+    // Animation settings.
+    this.frameX = 0;
+    this.fps = 0;
 
     // Organize paragraphs' list --Cheks for '\n' keywords in this.text variable.
     let lastIndex = 0;
@@ -32,6 +36,7 @@ export class Signal extends Entity {
 
   tick(keyListener) {
     this.collisionWithPlayer(keyListener);
+    this.animMonitor();
 
     if (this.showMsg) {
       this.animText();
@@ -58,9 +63,21 @@ export class Signal extends Entity {
         }
         break;
       }
-      else if (CUR_ENT instanceof Signal) { 
+      else if (CUR_ENT instanceof Monitor) { 
         continue; 
       }
+    }
+  }
+
+  animMonitor() {
+    this.fps++;
+    if (this.fps > 15) {
+      this.frameX++;
+      this.fps = 0;
+    }
+
+    if (this.frameX > 1) {
+      this.frameX = 0;
     }
   }
 
@@ -94,7 +111,7 @@ export class Signal extends Entity {
   draw(ctx) {
     // Render signal.
     ctx.drawImage(AssetPool.museumSpritesheet.image, 
-      0 * GlobalVariables.SPRITE_SIZE, 0 * GlobalVariables.SPRITE_SIZE, 
+      this.frameX * GlobalVariables.SPRITE_SIZE, 2 * GlobalVariables.SPRITE_SIZE, 
       GlobalVariables.SPRITE_SIZE, GlobalVariables.SPRITE_SIZE, 
       this.x - Camera.x,
       this.y - Camera.y,
@@ -102,15 +119,17 @@ export class Signal extends Entity {
       GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE, 
       0, 0
     );
-
+    
+    this.zIndex = 0; // Player is in front of Monitor.
     if (!this.showMsg) { return; }
+    this.zIndex = 2; // To render the text and the box, Player has to be behind the Monitor.
     
     ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
     ctx.fillRect(0, 0, GlobalVariables.GAME_WIDTH, GlobalVariables.GAME_HEIGHT);
 
     // Render screen.
     const ADJUST_VALUE = 120;
-    ctx.fillStyle = 'green';
+    ctx.fillStyle = "rgba(220, 220, 220, 1)";
     ctx.fillRect(ADJUST_VALUE, ADJUST_VALUE, 
       GlobalVariables.GAME_WIDTH - ADJUST_VALUE * 2, 
       GlobalVariables.GAME_HEIGHT - ADJUST_VALUE * 2);
@@ -136,16 +155,19 @@ export class Signal extends Entity {
 
   showIFrameContainer(pxMoveBellowCenter) {
     // Get the iframe element.
-    const iframe = document.getElementById('iframeContainer');
+    const iframeContainer = document.getElementById('iframeContainer');
 
     // Unhide iframe
-    iframe.style.width = '420px';
-    iframe.style.height = '345px';
-    iframe.style.display = 'flex';
+    const iframe = document.getElementById('iframe');
+    iframe.width = GlobalVariables.IFRAME_WIDTH;
+    iframe.height = GlobalVariables.IFRAME_HEIGHT;
+    iframeContainer.style.width = GlobalVariables.IFRAME_WIDTH;
+    iframeContainer.style.height = GlobalVariables.IFRAME_HEIGHT;
+    iframeContainer.style.display = 'flex';
 
     // Reposition of iframe a little bellow from the center.
     var movement = pxMoveBellowCenter;
-    iframe.style.top = "calc(50% + " + movement + "px)";
+    iframeContainer.style.top = "calc(50% + " + movement + "px)";
   }
 
   hideIFrameContainer() {

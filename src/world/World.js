@@ -2,7 +2,7 @@ import { GlobalVariables } from "../utils/GlobalVariables.js";
 import { BlockableTile } from "./BlockableTile.js";
 import { Floor } from "./Floor.js";
 import { Camera } from "./Camera.js";
-import { Signal } from "../entities/Signal.js";
+import { Monitor } from "../entities/Monitor.js";
 import { Entity } from "../entities/Entity.js";
 import { Game } from "../main/Game.js";
 
@@ -59,7 +59,7 @@ export class World {
             0, 1);
           World.tilesList.push(floor);
 
-          let signal = new Signal(xx * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
+          let signal = new Monitor(xx * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
                                   yy * GlobalVariables.SPRITE_SIZE * GlobalVariables.SCALE,
                                   GlobalVariables.ENTITY_SIZE, GlobalVariables.ENTITY_SIZE,
                                   "Hello unknown traveller! How are you?\n What a pleasure to see\n you in such good health.\nDragons have been destroying all of our crops.\nCan you go ask them to stop?\nThank you!");

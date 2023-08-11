@@ -1,3 +1,4 @@
+import { Entity } from "../entities/Entity.js";
 import { Player } from "../entities/Player.js";
 import { GlobalVariables } from "../utils/GlobalVariables.js";
 import { KeyListener } from "../utils/KeyListener.js";
@@ -62,7 +63,8 @@ export class Game {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   
     this.world.draw(ctx);
-  
+    
+    Game.entitiesList.sort(Entity.entitySorter);
     for (let i = 0; i < Game.entitiesList.length; i++) {
       Game.entitiesList[i].draw(ctx);
     }

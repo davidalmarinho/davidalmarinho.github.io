@@ -4,12 +4,13 @@ import { GlobalVariables } from "../utils/GlobalVariables.js";
 import { Camera } from "../world/Camera.js";
 import { World } from "../world/World.js";
 import { Game } from "../main/Game.js";
-import { Signal } from "./Signal.js";
+import { Monitor } from "./Monitor.js";
 import { Frame } from "../rendering/Frame.js";
 
 export class Player extends Entity {
   constructor(x, y, width, height) {
     super(x, y, width, height);
+    this.zIndex = 1;
     
     this.fps = 0;
     this.animationIndex = 0;
@@ -127,7 +128,7 @@ export class Player extends Entity {
       if (CUR_ENT instanceof Player) {
         continue;
       }
-      else if (CUR_ENT instanceof Signal) {
+      else if (CUR_ENT instanceof Monitor) {
         if (this.isColliding(this, CUR_ENT)) {
           this.showInteractingTip = true;
         }
